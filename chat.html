@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuChat - Чат</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kablammo&display=swap" rel="stylesheet">
+    <script src="https://js.puter.com/v2/"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Kablammo', cursive;
+            background-color: #ffffff;
+            color: #1a4733;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            background-color: #e6f4ea;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+            color: #1a4733;
+        }
+        .main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .chat-box {
+            max-width: 600px;
+            width: 100%;
+            background-color: #ffffff;
+            border: 2px solid #4caf50;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .chat-box textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            font-family: 'Kablammo', cursive;
+            font-size: 16px;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            resize: none;
+            color: #1a4733;
+        }
+        .chat-box textarea:focus {
+            outline: none;
+            border-color: #388e3c;
+        }
+        .chat-box .image-input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: 'Kablammo', cursive;
+            font-size: 16px;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            color: #1a4733;
+            display: none;
+        }
+        .chat-box .image-input:focus {
+            outline: none;
+            border-color: #388e3c;
+        }
+        .chat-box .buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-box button {
+            padding: 10px 20px;
+            font-family: 'Kablammo', cursive;
+            font-size: 16px;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: #1a4733;
+            cursor: pointer;
+        }
+        .chat-box button.active {
+            background-color: #2196f3;
+            color: #ffffff;
+            border-color: #1976d2;
+        }
+        .chat-box button:hover:not(.active) {
+            background-color: #e6f4ea;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+            background-color: #f9fff9;
+            color: #1a4733;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NeuChat - Чат</h1>
+    </div>
+    <div class="main">
+        <div class="chat-box">
+            <textarea id="inputText" placeholder="Введите ваш запрос..."></textarea>
+            <input type="text" id="imageInput" class="image-input" placeholder="Введите URL изображения...">
+            <div class="buttons">
+                <button id="visionButton">Видеть</button>
+                <button id="imageButton">Изображение</button>
+            </div>
+            <div id="response" class="response"></div>
+        </div>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const model = urlParams.get('model') || 'openrouter/auto';
+        const visionButton = document.getElementById('visionButton');
+        const imageButton = document.getElementById('imageButton');
+        const inputText = document.getElementById('inputText');
+        const imageInput = document.getElementById('imageInput');
+        const responseDiv = document.getElementById('response');
+        let activeMode = null;
+
+        visionButton.addEventListener('click', () => {
+            if (activeMode === 'vision') {
+                activeMode = null;
+                visionButton.classList.remove('active');
+                imageInput.style.display = 'none';
+            } else {
+                activeMode = 'vision';
+                visionButton.classList.add('active');
+                imageButton.classList.remove('active');
+                imageInput.style.display = 'block';
+            }
+        });
+
+        imageButton.addEventListener('click', () => {
+            if (activeMode === 'image') {
+                activeMode = null;
+                imageButton.classList.remove('active');
+            } else {
+                activeMode = 'image';
+                imageButton.classList.add('active');
+                visionButton.classList.remove('active');
+                imageInput.style.display = 'none';
+            }
+        });
+
+        inputText.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const text = inputText.value.trim();
+                if (!text) return;
+
+                responseDiv.innerHTML = 'Обработка...';
+
+                if (activeMode === 'vision') {
+                    const imageUrl = imageInput.value.trim();
+                    puter.ai.chat(text, imageUrl, { model: `openrouter:${model}` })
+                        .then(response => {
+                            puter.print(response).then(html => {
+                                responseDiv.innerHTML = html;
+                            });
+                        })
+                        .catch(error => {
+                            responseDiv.innerHTML = 'Ошибка: ' + error.message;
+                        });
+                } else if (activeMode === 'image') {
+                    puter.ai.txt2img(text)
+                        .then(imageElement => {
+                            responseDiv.innerHTML = '';
+                            responseDiv.appendChild(imageElement);
+                        })
+                        .catch(error => {
+                            responseDiv.innerHTML = 'Ошибка: ' + error.message;
+                        });
+                } else {
+                    puter.ai.chat(text, { model: `openrouter:${model}` })
+                        .then(response => {
+                            responseDiv.innerHTML = response;
+                        })
+                        .catch(error => {
+                            responseDiv.innerHTML = 'Ошибка: ' + error.message;
+                        });
+                }
+                inputText.value = '';
+                imageInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

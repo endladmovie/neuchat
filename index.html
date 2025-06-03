@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuChat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kablammo&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=WDXL+Lubrifont+TC&display=swap" rel="stylesheet">
+
+	
+	
+	
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Kablammo', cursive;
+            background-color: #ffffff;
+            color: #1a4733;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            background-color: #e6f4ea;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+            color: #1a4733;
+        }
+        .ad {
+            background-color: #ffffff;
+            padding: 15px;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            text-align: center;
+        }
+        .ad p {
+            margin: 0;
+            font-size: 14px;
+            color: #388e3c;
+        }
+        .main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .model-selector {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        .model-selector h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #1a4733;
+        }
+        .model-selector select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            font-family: "WDXL Lubrifont TC", sans-serif;
+            background-color: #ffffff;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            color: #1a4733;
+            cursor: pointer;
+        }
+        .model-selector select:focus {
+            outline: none;
+            border-color: #388e3c;
+        }
+        .footer {
+            background-color: #e6f4ea;
+            padding: 20px;
+            text-align: center;
+            color: #1a4733;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NeuChat</h1>
+        <div class="ad">
+            <p>Реклама: Откройте силу ИИ с NeuChat!</p>
+        </div>
+    </div>
+    <div class="main">
+        <div class="model-selector">
+            <h2>Выберите модель</h2>
+            <select onchange="window.location.href='chat.html?model=' + encodeURIComponent(this.value)">
+                <option value="" disabled selected>Выберите модель</option>
+                <option value="01-ai/yi-large">01-ai/yi-large</option>
+                <option value="aetherwiing/mn-starcannon-12b">aetherwiing/mn-starcannon-12b</option>
+                <option value="agentica-org/deepcoder-14b-preview:free">agentica-org/deepcoder-14b-preview:free</option>
+                <option value="ai21/jamba-1.6-large">ai21/jamba-1.6-large</option>
+                <option value="ai21/jamba-1.6-mini">ai21/jamba-1.6-mini</option>
+                <option value="aion-labs/aion-1.0">aion-labs/aion-1.0</option>
+                <option value="aion-labs/aion-1.0-mini">aion-labs/aion-1.0-mini</option>
+                <option value="aion-labs/aion-rp-llama-3.1-8b">aion-labs/aion-rp-llama-3.1-8b</option>
+                <option value="alfredpros/codellama-7b-instruct-solidity">alfredpros/codellama-7b-instruct-solidity</option>
+                <option value="all-hands/openhands-lm-32b-v0.1">all-hands/openhands-lm-32b-v0.1</option>
+                <option value="allenai/olmo-7b-instruct">allenai/olmo-7b-instruct</option>
+                <option value="alpindale/goliath-120b">alpindale/goliath-120b</option>
+                <option value="alpindale/magnum-72b">alpindale/magnum-72b</option>
+                <option value="amazon/nova-lite-v1">amazon/nova-lite-v1</option>
+                <option value="amazon/nova-micro-v1">amazon/nova-micro-v1</option>
+                <option value="amazon/nova-pro-v1">amazon/nova-pro-v1</option>
+                <option value="anthracite-org/magnum-v2-72b">anthracite-org/magnum-v2-72b</option>
+                <option value="anthracite-org/magnum-v4-72b">anthracite-org/magnum-v4-72b</option>
+                <option value="anthropic/claude-2">anthropic/claude-2</option>
+                <option value="anthropic/claude-2.0">anthropic/claude-2.0</option>
+                <option value="anthropic/claude-2.0:beta">anthropic/claude-2.0:beta</option>
+                <option value="anthropic/claude-2.1">anthropic/claude-2.1</option>
+                <option value="anthropic/claude-2.1:beta">anthropic/claude-2.1:beta</option>
+                <option value="anthropic/claude-2:beta">anthropic/claude-2:beta</option>
+                <option value="anthropic/claude-3-haiku">anthropic/claude-3-haiku</option>
+                <option value="anthropic/claude-3-haiku:beta">anthropic/claude-3-haiku:beta</option>
+                <option value="anthropic/claude-3-opus">anthropic/claude-3-opus</option>
+                <option value="anthropic/claude-3-opus:beta">anthropic/claude-3-opus:beta</option>
+                <option value="anthropic/claude-3-sonnet">anthropic/claude-3-sonnet</option>
+                <option value="anthropic/claude-3-sonnet:beta">anthropic/claude-3-sonnet:beta</option>
+                <option value="anthropic/claude-3.5-haiku">anthropic/claude-3.5-haiku</option>
+                <option value="anthropic/claude-3.5-haiku-20241022">anthropic/claude-3.5-haiku-20241022</option>
+                <option value="anthropic/claude-3.5-haiku-20241022:beta">anthropic/claude-3.5-haiku-20241022:beta</option>
+                <option value="anthropic/claude-3.5-haiku:beta">anthropic/claude-3.5-haiku:beta</option>
+                <option value="anthropic/claude-3.5-sonnet">anthropic/claude-3.5-sonnet</option>
+                <option value="anthropic/claude-3.5-sonnet-20240620">anthropic/claude-3.5-sonnet-20240620</option>
+                <option value="anthropic/claude-3.5-sonnet-20240620:beta">anthropic/claude-3.5-sonnet-20240620:beta</option>
+                <option value="anthropic/claude-3.5-sonnet:beta">anthropic/claude-3.5-sonnet:beta</option>
+                <option value="anthropic/claude-3.7-sonnet">anthropic/claude-3.7-sonnet</option>
+                <option value="anthropic/claude-3.7-sonnet:beta">anthropic/claude-3.7-sonnet:beta</option>
+                <option value="anthropic/claude-3.7-sonnet:thinking">anthropic/claude-3.7-sonnet:thinking</option>
+                <option value="anthropic/claude-opus-4">anthropic/claude-opus-4</option>
+                <option value="anthropic/claude-sonnet-4">anthropic/claude-sonnet-4</option>
+                <option value="arcee-ai/arcee-blitz">arcee-ai/arcee-blitz</option>
+                <option value="arcee-ai/caller-large">arcee-ai/caller-large</option>
+                <option value="arcee-ai/coder-large">arcee-ai/coder-large</option>
+                <option value="arcee-ai/maestro-reasoning">arcee-ai/maestro-reasoning</option>
+                <option value="arcee-ai/spotlight">arcee-ai/spotlight</option>
+                <option value="arcee-ai/virtuoso-large">arcee-ai/virtuoso-large</option>
+                <option value="arcee-ai/virtuoso-medium-v2">arcee-ai/virtuoso-medium-v2</option>
+                <option value="arliai/qwq-32b-arliai-rpr-v1:free">arliai/qwq-32b-arliai-rpr-v1:free</option>
+                <option value="cognitivecomputations/dolphin-mixtral-8x22b">cognitivecomputations/dolphin-mixtral-8x22b</option>
+                <option value="cognitivecomputations/dolphin3.0-mistral-24b:free">cognitivecomputations/dolphin3.0-mistral-24b:free</option>
+                <option value="cognitivecomputations/dolphin3.0-r1-mistral-24b:free">cognitivecomputations/dolphin3.0-r1-mistral-24b:free</option>
+                <option value="cohere/command">cohere/command</option>
+                <option value="cohere/command-a">cohere/command-a</option>
+                <option value="cohere/command-r">cohere/command-r</option>
+                <option value="cohere/command-r-03-2024">cohere/command-r-03-2024</option>
+                <option value="cohere/command-r-08-2024">cohere/command-r-08-2024</option>
+                <option value="cohere/command-r-plus">cohere/command-r-plus</option>
+                <option value="cohere/command-r-plus-04-2024">cohere/command-r-plus-04-2024</option>
+                <option value="cohere/command-r-plus-08-2024">cohere/command-r-plus-08-2024</option>
+                <option value="cohere/command-r7b-12-2024">cohere/command-r7b-12-2024</option>
+                <option value="deepseek/deepseek-chat">deepseek/deepseek-chat</option>
+                <option value="deepseek/deepseek-chat-v3-0324">deepseek/deepseek-chat-v3-0324</option>
+                <option value="deepseek/deepseek-chat-v3-0324:free">deepseek/deepseek-chat-v3-0324:free</option>
+                <option value="deepseek/deepseek-chat:free">deepseek/deepseek-chat:free</option>
+                <option value="deepseek/deepseek-coder">deepseek/deepseek-coder</option>
+                <option value="deepseek/deepseek-prover-v2">deepseek/deepseek-prover-v2</option>
+                <option value="deepseek/deepseek-prover-v2:free">deepseek/deepseek-prover-v2:free</option>
+                <option value="deepseek/deepseek-r1">deepseek/deepseek-r1</option>
+                <option value="deepseek/deepseek-r1-distill-llama-70b">deepseek/deepseek-r1-distill-llama-70b</option>
+                <option value="deepseek/deepseek-r1-distill-llama-70b:free">deepseek/deepseek-r1-distill-llama-70b:free</option>
+                <option value="deepseek/deepseek-r1-distill-llama-8b">deepseek/deepseek-r1-distill-llama-8b</option>
+                <option value="deepseek/deepseek-r1-distill-qwen-1.5b">deepseek/deepseek-r1-distill-qwen-1.5b</option>
+                <option value="deepseek/deepseek-r1-distill-qwen-14b">deepseek/deepseek-r1-distill-qwen-14b</option>
+                <option value="deepseek/deepseek-r1-distill-qwen-14b:free">deepseek/deepseek-r1-distill-qwen-14b:free</option>
+                <option value="deepseek/deepseek-r1-distill-qwen-32b">deepseek/deepseek-r1-distill-qwen-32b</option>
+                <option value="deepseek/deepseek-r1-distill-qwen-32b:free">deepseek/deepseek-r1-distill-qwen-32b:free</option>
+                <option value="deepseek/deepseek-r1-zero:free">deepseek/deepseek-r1-zero:free</option>
+                <option value="deepseek/deepseek-r1:free">deepseek/deepseek-r1:free</option>
+                <option value="deepseek/deepseek-v3-base:free">deepseek/deepseek-v3-base:free</option>
+                <option value="eleutherai/llemma_7b">eleutherai/llemma_7b</option>
+                <option value="eva-unit-01/eva-llama-3.33-70b">eva-unit-01/eva-llama-3.33-70b</option>
+                <option value="eva-unit-01/eva-qwen-2.5-32b">eva-unit-01/eva-qwen-2.5-32b</option>
+                <option value="eva-unit-01/eva-qwen-2.5-72b">eva-unit-01/eva-qwen-2.5-72b</option>
+                <option value="featherless/qwerky-72b:free">featherless/qwerky-72b:free</option>
+                <option value="google/gemini-2.0-flash-001">google/gemini-2.0-flash-001</option>
+                <option value="google/gemini-2.0-flash-exp:free">google/gemini-2.0-flash-exp:free</option>
+                <option value="google/gemini-2.0-flash-lite-001">google/gemini-2.0-flash-lite-001</option>
+                <option value="google/gemini-2.5-flash-preview">google/gemini-2.5-flash-preview</option>
+                <option value="google/gemini-2.5-flash-preview-05-20">google/gemini-2.5-flash-preview-05-20</option>
+                <option value="google/gemini-2.5-flash-preview-05-20:thinking">google/gemini-2.5-flash-preview-05-20:thinking</option>
+                <option value="google/gemini-2.5-flash-preview:thinking">google/gemini-2.5-flash-preview:thinking</option>
+                <option value="google/gemini-2.5-pro-exp-03-25">google/gemini-2.5-pro-exp-03-25</option>
+                <option value="google/gemini-2.5-pro-preview">google/gemini-2.5-pro-preview</option>
+                <option value="google/gemini-flash-1.5">google/gemini-flash-1.5</option>
+                <option value="google/gemini-flash-1.5-8b">google/gemini-flash-1.5-8b</option>
+                <option value="google/gemini-pro-1.5">google/gemini-pro-1.5</option>
+                <option value="google/gemma-2-27b-it">google/gemma-2-27b-it</option>
+                <option value="google/gemma-2-9b-it">google/gemma-2-9b-it</option>
+                <option value="google/gemma-2-9b-it:free">google/gemma-2-9b-it:free</option>
+                <option value="google/gemma-3-12b-it">google/gemma-3-12b-it</option>
+                <option value="google/gemma-3-12b-it:free">google/gemma-3-12b-it:free</option>
+                <option value="google/gemma-3-1b-it:free">google/gemma-3-1b-it:free</option>
+                <option value="google/gemma-3-27b-it">google/gemma-3-27b-it</option>
+                <option value="google/gemma-3-27b-it:free">google/gemma-3-27b-it:free</option>
+                <option value="google/gemma-3-4b-it">google/gemma-3-4b-it</option>
+                <option value="google/gemma-3-4b-it:free">google/gemma-3-4b-it:free</option>
+                <option value="google/gemma-3n-e4b-it:free">google/gemma-3n-e4b-it:free</option>
+                <option value="gryphe/mythomax-l2-13b">gryphe/mythomax-l2-13b</option>
+                <option value="inception/mercury-coder-small-beta">inception/mercury-coder-small-beta</option>
+                <option value="infermatic/mn-inferor-12b">infermatic/mn-inferor-12b</option>
+                <option value="inflection/inflection-3-pi">inflection/inflection-3-pi</option>
+                <option value="inflection/inflection-3-productivity">inflection/inflection-3-productivity</option>
+                <option value="liquid/lfm-3b">liquid/lfm-3b</option>
+                <option value="liquid/lfm-40b">liquid/lfm-40b</option>
+                <option value="liquid/lfm-7b">liquid/lfm-7b</option>
+                <option value="mancer/weaver">mancer/weaver</option>
+                <option value="meta-llama/llama-2-70b-chat">meta-llama/llama-2-70b-chat</option>
+                <option value="meta-llama/llama-3-70b-instruct">meta-llama/llama-3-70b-instruct</option>
+                <option value="meta-llama/llama-3-8b-instruct">meta-llama/llama-3-8b-instruct</option>
+                <option value="meta-llama/llama-3.1-405b">meta-llama/llama-3.1-405b</option>
+                <option value="meta-llama/llama-3.1-405b-instruct">meta-llama/llama-3.1-405b-instruct</option>
+                <option value="meta-llama/llama-3.1-405b:free">meta-llama/llama-3.1-405b:free</option>
+                <option value="meta-llama/llama-3.1-70b-instruct">meta-llama/llama-3.1-70b-instruct</option>
+                <option value="meta-llama/llama-3.1-8b-instruct">meta-llama/llama-3.1-8b-instruct</option>
+                <option value="meta-llama/llama-3.1-8b-instruct:free">meta-llama/llama-3.1-8b-instruct:free</option>
+                <option value="meta-llama/llama-3.2-11b-vision-instruct">meta-llama/llama-3.2-11b-vision-instruct</option>
+                <option value="meta-llama/llama-3.2-11b-vision-instruct:free">meta-llama/llama-3.2-11b-vision-instruct:free</option>
+                <option value="meta-llama/llama-3.2-1b-instruct">meta-llama/llama-3.2-1b-instruct</option>
+                <option value="meta-llama/llama-3.2-1b-instruct:free">meta-llama/llama-3.2-1b-instruct:free</option>
+                <option value="meta-llama/llama-3.2-3b-instruct">meta-llama/llama-3.2-3b-instruct</option>
+                <option value="meta-llama/llama-3.2-3b-instruct:free">meta-llama/llama-3.2-3b-instruct:free</option>
+                <option value="meta-llama/llama-3.2-90b-vision-instruct">meta-llama/llama-3.2-90b-vision-instruct</option>
+                <option value="meta-llama/llama-3.3-70b-instruct">meta-llama/llama-3.3-70b-instruct</option>
+                <option value="meta-llama/llama-3.3-70b-instruct:free">meta-llama/llama-3.3-70b-instruct:free</option>
+                <option value="meta-llama/llama-3.3-8b-instruct:free">meta-llama/llama-3.3-8b-instruct:free</option>
+                <option value="meta-llama/llama-4-maverick">meta-llama/llama-4-maverick</option>
+                <option value="meta-llama/llama-4-maverick:free">meta-llama/llama-4-maverick:free</option>
+                <option value="meta-llama/llama-4-scout">meta-llama/llama-4-scout</option>
+                <option value="meta-llama/llama-4-scout:free">meta-llama/llama-4-scout:free</option>
+                <option value="meta-llama/llama-guard-2-8b">meta-llama/llama-guard-2-8b</option>
+                <option value="meta-llama/llama-guard-3-8b">meta-llama/llama-guard-3-8b</option>
+                <option value="meta-llama/llama-guard-4-12b">meta-llama/llama-guard-4-12b</option>
+                <option value="microsoft/mai-ds-r1:free">microsoft/mai-ds-r1:free</option>
+                <option value="microsoft/phi-3-medium-128k-instruct">microsoft/phi-3-medium-128k-instruct</option>
+                <option value="microsoft/phi-3-mini-128k-instruct">microsoft/phi-3-mini-128k-instruct</option>
+                <option value="microsoft/phi-3.5-mini-128k-instruct">microsoft/phi-3.5-mini-128k-instruct</option>
+                <option value="microsoft/phi-4">microsoft/phi-4</option>
+                <option value="microsoft/phi-4-multimodal-instruct">microsoft/phi-4-multimodal-instruct</option>
+                <option value="microsoft/phi-4-reasoning-plus">microsoft/phi-4-reasoning-plus</option>
+                <option value="microsoft/phi-4-reasoning-plus:free">microsoft/phi-4-reasoning-plus:free</option>
+                <option value="microsoft/phi-4-reasoning:free">microsoft/phi-4-reasoning:free</option>
+                <option value="microsoft/wizardlm-2-8x22b">microsoft/wizardlm-2-8x22b</option>
+                <option value="minimax/minimax-01">minimax/minimax-01</option>
+                <option value="mistralai/codestral-2501">mistralai/codestral-2501</option>
+                <option value="mistralai/codestral-mamba">mistralai/codestral-mamba</option>
+                <option value="mistralai/devstral-small">mistralai/devstral-small</option>
+                <option value="mistralai/devstral-small:free">mistralai/devstral-small:free</option>
+                <option value="mistralai/ministral-3b">mistralai/ministral-3b</option>
+                <option value="mistralai/ministral-8b">mistralai/ministral-8b</option>
+                <option value="mistralai/mistral-7b-instruct">mistralai/mistral-7b-instruct</option>
+                <option value="mistralai/mistral-7b-instruct-v0.1">mistralai/mistral-7b-instruct-v0.1</option>
+                <option value="mistralai/mistral-7b-instruct-v0.2">mistralai/mistral-7b-instruct-v0.2</option>
+                <option value="mistralai/mistral-7b-instruct-v0.3">mistralai/mistral-7b-instruct-v0.3</option>
+                <option value="mistralai/mistral-7b-instruct:free">mistralai/mistral-7b-instruct:free</option>
+                <option value="mistralai/mistral-large">mistralai/mistral-large</option>
+                <option value="mistralai/mistral-large-2407">mistralai/mistral-large-2407</option>
+                <option value="mistralai/mistral-large-2411">mistralai/mistral-large-2411</option>
+                <option value="mistralai/mistral-medium">mistralai/mistral-medium</option>
+                <option value="mistralai/mistral-medium-3">mistralai/mistral-medium-3</option>
+                <option value="mistralai/mistral-nemo">mistralai/mistral-nemo</option>
+                <option value="mistralai/mistral-nemo:free">mistralai/mistral-nemo:free</option>
+                <option value="mistralai/mistral-saba">mistralai/mistral-saba</option>
+                <option value="mistralai/mistral-small">mistralai/mistral-small</option>
+                <option value="mistralai/mistral-small-24b-instruct-2501">mistralai/mistral-small-24b-instruct-2501</option>
+                <option value="mistralai/mistral-small-24b-instruct-2501:free">mistralai/mistral-small-24b-instruct-2501:free</option>
+                <option value="mistralai/mistral-small-3.1-24b-instruct">mistralai/mistral-small-3.1-24b-instruct</option>
+                <option value="mistralai/mistral-small-3.1-24b-instruct:free">mistralai/mistral-small-3.1-24b-instruct:free</option>
+                <option value="mistralai/mistral-tiny">mistralai/mistral-tiny</option>
+                <option value="mistralai/mixtral-8x22b-instruct">mistralai/mixtral-8x22b-instruct</option>
+                <option value="mistralai/mixtral-8x7b-instruct">mistralai/mixtral-8x7b-instruct</option>
+                <option value="mistralai/pixtral-12b">mistralai/pixtral-12b</option>
+                <option value="mistralai/pixtral-large-2411">mistralai/pixtral-large-2411</option>
+                <option value="moonshotai/kimi-vl-a3b-thinking:free">moonshotai/kimi-vl-a3b-thinking:free</option>
+                <option value="moonshotai/moonlight-16b-a3b-instruct:free">moonshotai/moonlight-16b-a3b-instruct:free</option>
+                <option value="neversleep/llama-3-lumimaid-70b">neversleep/llama-3-lumimaid-70b</option>
+                <option value="neversleep/llama-3-lumimaid-8b">neversleep/llama-3-lumimaid-8b</option>
+                <option value="neversleep/llama-3-lumimaid-8b:extended">neversleep/llama-3-lumimaid-8b:extended</option>
+                <option value="neversleep/llama-3.1-lumimaid-70b">neversleep/llama-3.1-lumimaid-70b</option>
+                <option value="neversleep/llama-3.1-lumimaid-8b">neversleep/llama-3.1-lumimaid-8b</option>
+                <option value="neversleep/noromaid-20b">neversleep/noromaid-20b</option>
+                <option value="nothingiisreal/mn-celeste-12b">nothingiisreal/mn-celeste-12b</option>
+                <option value="nousresearch/deephermes-3-llama-3-8b-preview:free">nousresearch/deephermes-3-llama-3-8b-preview:free</option>
+                <option value="nousresearch/deephermes-3-mistral-24b-preview:free">nousresearch/deephermes-3-mistral-24b-preview:free</option>
+                <option value="nousresearch/hermes-2-pro-llama-3-8b">nousresearch/hermes-2-pro-llama-3-8b</option>
+                <option value="nousresearch/hermes-3-llama-3.1-405b">nousresearch/hermes-3-llama-3.1-405b</option>
+                <option value="nousresearch/hermes-3-llama-3.1-70b">nousresearch/hermes-3-llama-3.1-70b</option>
+                <option value="nousresearch/nous-hermes-2-mixtral-8x7b-dpo">nousresearch/nous-hermes-2-mixtral-8x7b-dpo</option>
+                <option value="nvidia/llama-3.1-nemotron-70b-instruct">nvidia/llama-3.1-nemotron-70b-instruct</option>
+                <option value="nvidia/llama-3.1-nemotron-ultra-253b-v1:free">nvidia/llama-3.1-nemotron-ultra-253b-v1:free</option>
+                <option value="nvidia/llama-3.3-nemotron-super-49b-v1">nvidia/llama-3.3-nemotron-super-49b-v1</option>
+                <option value="nvidia/llama-3.3-nemotron-super-49b-v1:free">nvidia/llama-3.3-nemotron-super-49b-v1:free</option>
+                <option value="open-r1/olympiccoder-32b:free">open-r1/olympiccoder-32b:free</option>
+                <option value="openai/chatgpt-4o-latest">openai/chatgpt-4o-latest</option>
+                <option value="openai/codex-mini">openai/codex-mini</option>
+                <option value="openai/gpt-3.5-turbo">openai/gpt-3.5-turbo</option>
+                <option value="openai/gpt-3.5-turbo-0125">openai/gpt-3.5-turbo-0125</option>
+                <option value="openai/gpt-3.5-turbo-0613">openai/gpt-3.5-turbo-0613</option>
+                <option value="openai/gpt-3.5-turbo-1106">openai/gpt-3.5-turbo-1106</option>
+                <option value="openai/gpt-3.5-turbo-16k">openai/gpt-3.5-turbo-16k</option>
+                <option value="openai/gpt-3.5-turbo-instruct">openai/gpt-3.5-turbo-instruct</option>
+                <option value="openai/gpt-4">openai/gpt-4</option>
+                <option value="openai/gpt-4-0314">openai/gpt-4-0314</option>
+                <option value="openai/gpt-4-1106-preview">openai/gpt-4-1106-preview</option>
+                <option value="openai/gpt-4-32k">openai/gpt-4-32k</option>
+                <option value="openai/gpt-4-32k-0314">openai/gpt-4-32k-0314</option>
+                <option value="openai/gpt-4-turbo">openai/gpt-4-turbo</option>
+                <option value="openai/gpt-4-turbo-preview">openai/gpt-4-turbo-preview</option>
+                <option value="openai/gpt-4.1">openai/gpt-4.1</option>
+                <option value="openai/gpt-4.1-mini">openai/gpt-4.1-mini</option>
+                <option value="openai/gpt-4.1-nano">openai/gpt-4.1-nano</option>
+                <option value="openai/gpt-4.5-preview">openai/gpt-4.5-preview</option>
+                <option value="openai/gpt-4o">openai/gpt-4o</option>
+                <option value="openai/gpt-4o-2024-05-13">openai/gpt-4o-2024-05-13</option>
+                <option value="openai/gpt-4o-2024-08-06">openai/gpt-4o-2024-08-06</option>
+                <option value="openai/gpt-4o-2024-11-20">openai/gpt-4o-2024-11-20</option>
+                <option value="openai/gpt-4o-mini">openai/gpt-4o-mini</option>
+                <option value="openai/gpt-4o-mini-2024-07-18">openai/gpt-4o-mini-2024-07-18</option>
+                <option value="openai/gpt-4o-mini-search-preview">openai/gpt-4o-mini-search-preview</option>
+                <option value="openai/gpt-4o-search-preview">openai/gpt-4o-search-preview</option>
+                <option value="openai/gpt-4o:extended">openai/gpt-4o:extended</option>
+                <option value="openai/o1">openai/o1</option>
+                <option value="openai/o1-mini">openai/o1-mini</option>
+                <option value="openai/o1-mini-2024-09-12">openai/o1-mini-2024-09-12</option>
+                <option value="openai/o1-preview">openai/o1-preview</option>
+                <option value="openai/o1-preview-2024-09-12">openai/o1-preview-2024-09-12</option>
+                <option value="openai/o1-pro">openai/o1-pro</option>
+                <option value="openai/o3">openai/o3</option>
+                <option value="openai/o3-mini">openai/o3-mini</option>
+                <option value="openai/o3-mini-high">openai/o3-mini-high</option>
+                <option value="openai/o4-mini">openai/o4-mini</option>
+                <option value="openai/o4-mini-high">openai/o4-mini-high</option>
+                <option value="opengvlab/internvl3-14b:free">opengvlab/internvl3-14b:free</option>
+                <option value="opengvlab/internvl3-2b:free">opengvlab/internvl3-2b:free</option>
+                <option value="openrouter/auto">openrouter/auto</option>
+                <option value="perplexity/llama-3.1-sonar-large-128k-online">perplexity/llama-3.1-sonar-large-128k-online</option>
+                <option value="perplexity/llama-3.1-sonar-small-128k-online">perplexity/llama-3.1-sonar-small-128k-online</option>
+                <option value="perplexity/r1-1776">perplexity/r1-1776</option>
+                <option value="perplexity/sonar">perplexity/sonar</option>
+                <option value="perplexity/sonar-deep-research">perplexity/sonar-deep-research</option>
+                <option value="perplexity/sonar-pro">perplexity/sonar-pro</option>
+                <option value="perplexity/sonar-reasoning">perplexity/sonar-reasoning</option>
+                <option value="perplexity/sonar-reasoning-pro">perplexity/sonar-reasoning-pro</option>
+                <option value="pygmalionai/mythalion-13b">pygmalionai/mythalion-13b</option>
+                <option value="qwen/qwen-2-72b-instruct">qwen/qwen-2-72b-instruct</option>
+                <option value="qwen/qwen-2.5-72b-instruct">qwen/qwen-2.5-72b-instruct</option>
+                <option value="qwen/qwen-2.5-72b-instruct:free">qwen/qwen-2.5-72b-instruct:free</option>
+                <option value="qwen/qwen-2.5-7b-instruct">qwen/qwen-2.5-7b-instruct</option>
+                <option value="qwen/qwen-2.5-7b-instruct:free">qwen/qwen-2.5-7b-instruct:free</option>
+                <option value="qwen/qwen-2.5-coder-32b-instruct">qwen/qwen-2.5-coder-32b-instruct</option>
+                <option value="qwen/qwen-2.5-coder-32b-instruct:free">qwen/qwen-2.5-coder-32b-instruct:free</option>
+                <option value="qwen/qwen-2.5-vl-7b-instruct">qwen/qwen-2.5-vl-7b-instruct</option>
+                <option value="qwen/qwen-2.5-vl-7b-instruct:free">qwen/qwen-2.5-vl-7b-instruct:free</option>
+                <option value="qwen/qwen-max">qwen/qwen-max</option>
+                <option value="qwen/qwen-plus">qwen/qwen-plus</option>
+                <option value="qwen/qwen-turbo">qwen/qwen-turbo</option>
+                <option value="qwen/qwen-vl-max">qwen/qwen-vl-max</option>
+                <option value="qwen/qwen-vl-plus">qwen/qwen-vl-plus</option>
+                <option value="qwen/qwen2.5-coder-7b-instruct">qwen/qwen2.5-coder-7b-instruct</option>
+                <option value="qwen/qwen2.5-vl-32b-instruct">qwen/qwen2.5-vl-32b-instruct</option>
+                <option value="qwen/qwen2.5-vl-32b-instruct:free">qwen/qwen2.5-vl-32b-instruct:free</option>
+                <option value="qwen/qwen2.5-vl-3b-instruct:free">qwen/qwen2.5-vl-3b-instruct:free</option>
+                <option value="qwen/qwen2.5-vl-72b-instruct">qwen/qwen2.5-vl-72b-instruct</option>
+                <option value="qwen/qwen2.5-vl-72b-instruct:free">qwen/qwen2.5-vl-72b-instruct:free</option>
+                <option value="qwen/qwen3-14b">qwen/qwen3-14b</option>
+                <option value="qwen/qwen3-14b:free">qwen/qwen3-14b:free</option>
+                <option value="qwen/qwen3-235b-a22b">qwen/qwen3-235b-a22b</option>
+                <option value="qwen/qwen3-235b-a22b:free">qwen/qwen3-235b-a22b:free</option>
+                <option value="qwen/qwen3-30b-a3b">qwen/qwen3-30b-a3b</option>
+                <option value="qwen/qwen3-30b-a3b:free">qwen/qwen3-30b-a3b:free</option>
+                <option value="qwen/qwen3-32b">qwen/qwen3-32b</option>
+                <option value="qwen/qwen3-32b:free">qwen/qwen3-32b:free</option>
+                <option value="qwen/qwen3-8b">qwen/qwen3-8b</option>
+                <option value="qwen/qwen3-8b:free">qwen/qwen3-8b:free</option>
+                <option value="qwen/qwq-32b">qwen/qwq-32b</option>
+                <option value="qwen/qwq-32b-preview">qwen/qwq-32b-preview</option>
+                <option value="qwen/qwq-32b:free">qwen/qwq-32b:free</option>
+                <option value="raifle/sorcererlm-8x22b">raifle/sorcererlm-8x22b</option>
+                <option value="rekaai/reka-flash-3:free">rekaai/reka-flash-3:free</option>
+                <option value="sao10k/fimbulvetr-11b-v2">sao10k/fimbulvetr-11b-v2</option>
+                <option value="sao10k/l3-euryale-70b">sao10k/l3-euryale-70b</option>
+                <option value="sao10k/l3-lunaris-8b">sao10k/l3-lunaris-8b</option>
+                <option value="sao10k/l3.1-euryale-70b">sao10k/l3.1-euryale-70b</option>
+                <option value="sao10k/l3.3-euryale-70b">sao10k/l3.3-euryale-70b</option>
+                <option value="scb10x/llama3.1-typhoon2-70b-instruct">scb10x/llama3.1-typhoon2-70b-instruct</option>
+                <option value="scb10x/llama3.1-typhoon2-8b-instruct">scb10x/llama3.1-typhoon2-8b-instruct</option>
+                <option value="shisa-ai/shisa-v2-llama3.3-70b:free">shisa-ai/shisa-v2-llama3.3-70b:free</option>
+                <option value="sophosympatheia/midnight-rose-70b">sophosympatheia/midnight-rose-70b</option>
+                <option value="thedrummer/anubis-pro-105b-v1">thedrummer/anubis-pro-105b-v1</option>
+                <option value="thedrummer/rocinante-12b">thedrummer/rocinante-12b</option>
+                <option value="thedrummer/skyfall-36b-v2">thedrummer/skyfall-36b-v2</option>
+                <option value="thedrummer/unslopnemo-12b">thedrummer/unslopnemo-12b</option>
+                <option value="thedrummer/valkyrie-49b-v1">thedrummer/valkyrie-49b-v1</option>
+                <option value="thudm/glm-4-32b">thudm/glm-4-32b</option>
+                <option value="thudm/glm-4-32b:free">thudm/glm-4-32b:free</option>
+                <option value="thudm/glm-z1-32b">thudm/glm-z1-32b</option>
+                <option value="thudm/glm-z1-32b:free">thudm/glm-z1-32b:free</option>
+                <option value="thudm/glm-z1-rumination-32b">thudm/glm-z1-rumination-32b</option>
+                <option value="tngtech/deepseek-r1t-chimera:free">tngtech/deepseek-r1t-chimera:free</option>
+                <option value="undi95/remm-slerp-l2-13b">undi95/remm-slerp-l2-13b</option>
+                <option value="undi95/toppy-m-7b">undi95/toppy-m-7b</option>
+                <option value="x-ai/grok-2-1212">x-ai/grok-2-1212</option>
+                <option value="x-ai/grok-2-vision-1212">x-ai/grok-2-vision-1212</option>
+                <option value="x-ai/grok-3-beta">x-ai/grok-3-beta</option>
+                <option value="x-ai/grok-3-mini-beta">x-ai/grok-3-mini-beta</option>
+                <option value="x-ai/grok-beta">x-ai/grok-beta</option>
+                <option value="x-ai/grok-vision-beta">x-ai/grok-vision-beta</option>
+            </select>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2025 NeuChat. Все права защищены.</p>
+    </div>
+</body>
+</html>
