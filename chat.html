@@ -7,10 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kablammo&display=swap" rel="stylesheet">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=WDXL+Lubrifont+TC&display=swap" rel="stylesheet">
-
-    
+	
+	
     <script src="https://js.puter.com/v2/"></script>
     <style>
         body {
@@ -33,16 +33,48 @@
             font-size: 36px;
             color: #1a4733;
         }
-        .main {
+        .chat-container {
             flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        .message.user {
+            background-color: #4caf50;
+            color: #ffffff;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .message.bot {
+            background-color: #f9fff9;
+            border: 1px solid #4caf50;
+            color: #1a4733;
+            align-self: flex-start;
+            margin-right: auto;
+        }
+        .message img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+        .input-container {
+            background-color: #ffffff;
+            border-top: 2px solid #4caf50;
+            padding: 20px;
+            position: sticky;
+            bottom: 0;
         }
         .chat-box {
             max-width: 600px;
-            width: 100%;
+            margin: 0 auto;
             background-color: #ffffff;
             border: 2px solid #4caf50;
             border-radius: 15px;
@@ -53,7 +85,7 @@
             width: 100%;
             height: 100px;
             padding: 10px;
-            font-family: "WDXL Lubrifont TC", sans-serif;
+           font-family: "WDXL Lubrifont TC", sans-serif;
             font-size: 16px;
             border: 2px solid #4caf50;
             border-radius: 8px;
@@ -102,22 +134,16 @@
         .chat-box button:hover:not(.active) {
             background-color: #e6f4ea;
         }
-        .response {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #4caf50;
-            border-radius: 8px;
-            background-color: #f9fff9;
-            color: #1a4733;
-            font-size: 14px;
-        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>NeuChat - Чат</h1>
     </div>
-    <div class="main">
+    <div class="chat-container" id="chatContainer">
+        <!-- Сообщения будут добавляться сюда -->
+    </div>
+    <div class="input-container">
         <div class="chat-box">
             <textarea id="inputText" placeholder="Введите ваш запрос..."></textarea>
             <input type="text" id="imageInput" class="image-input" placeholder="Введите URL изображения...">
@@ -125,7 +151,6 @@
                 <button id="visionButton">Видеть</button>
                 <button id="imageButton">Изображение</button>
             </div>
-            <div id="response" class="response"></div>
         </div>
     </div>
     <script>
@@ -135,7 +160,7 @@
         const imageButton = document.getElementById('imageButton');
         const inputText = document.getElementById('inputText');
         const imageInput = document.getElementById('imageInput');
-        const responseDiv = document.getElementById('response');
+        const chatContainer = document.getElementById('chatContainer');
         let activeMode = null;
 
         visionButton.addEventListener('click', () => {
@@ -163,41 +188,52 @@
             }
         });
 
+        function addMessage(content, isUser, isImage = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            if (isImage) {
+                messageDiv.appendChild(content);
+            } else {
+                messageDiv.innerHTML = content.replace(/\n/g, '<br>');
+            }
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
         inputText.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 const text = inputText.value.trim();
                 if (!text) return;
 
-                responseDiv.innerHTML = 'Обработка...';
+                addMessage(text, true);
 
                 if (activeMode === 'vision') {
                     const imageUrl = imageInput.value.trim();
                     puter.ai.chat(text, imageUrl, { model: `openrouter:${model}` })
                         .then(response => {
                             puter.print(response).then(html => {
-                                responseDiv.innerHTML = html;
+                                addMessage(html, false);
                             });
                         })
                         .catch(error => {
-                            responseDiv.innerHTML = 'Ошибка: ' + error.message;
+                            addMessage('Ошибка: ' + error.message, false);
                         });
                 } else if (activeMode === 'image') {
                     puter.ai.txt2img(text)
                         .then(imageElement => {
-                            responseDiv.innerHTML = '';
-                            responseDiv.appendChild(imageElement);
+                            addMessage(imageElement, false, true);
                         })
                         .catch(error => {
-                            responseDiv.innerHTML = 'Ошибка: ' + error.message;
+                            addMessage('Ошибка: ' + error.message, false);
                         });
                 } else {
                     puter.ai.chat(text, { model: `openrouter:${model}` })
                         .then(response => {
-                            responseDiv.innerHTML = response;
+                            addMessage(response, false);
                         })
                         .catch(error => {
-                            responseDiv.innerHTML = 'Ошибка: ' + error.message;
+                            addMessage('Ошибка: ' + error.message, false);
                         });
                 }
                 inputText.value = '';
